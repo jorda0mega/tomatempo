@@ -4,11 +4,7 @@ var Start = React.createClass({
 	},
 	render: function(){
 		return (
-			React.createElement("input", {
-				"type": "button", 
-				"value": "Start",
-				"onClick": this.handleClick
-			})
+			<input type="button" value="Start" onClick={this.handleClick} />
 		);
 	}
 });
@@ -19,18 +15,14 @@ var Stop = React.createClass({
 	},
 	render: function(){
 		return (
-			React.createElement("input",{
-				"type": "button",
-				"value": "Stop",
-				"onClick": this.handleClick
-			})
+			<input type="button" value="Stop" onClick={this.handleClick} />
 		);
 	}
 })
 
 var Timer = React.createClass({
 	render: function(){
-		return React.createElement("div", {}, this.props.timer)
+		return <div>{this.props.timer}</div>
 	}
 });
 
@@ -46,22 +38,19 @@ var App = React.createClass({
 	},
   	render: function() {
   		return (
-  	  		React.createElement("table", 
-  	  			{},
-  	  			React.createElement("tr", 
-  	  				{}, 
-  	  				[
-  	  					React.createElement("td",
-  	  						{},
-  	  						React.createElement(Timer, {timer: this.state.timer})),
-  	  					React.createElement("td",
-  	  						{},
-  	  						React.createElement(Start, {startTimer: this.startTimer})),
-  	  					React.createElement("td",
-  	  						{},
-  	  						React.createElement(Stop, {stopTimer: this.stopTimer}))
-
-  	  				]))
+				<table>
+					<tr>
+						<td>
+							<Timer timer={this.state.timer} />
+						</td>
+						<td>
+							<Start startTimer={this.startTimer} />
+						</td>
+						<td>
+							<Stop stopTimer={this.stopTimer} />
+						</td>
+					</tr>
+				</table>
     	);
   	}
 });
