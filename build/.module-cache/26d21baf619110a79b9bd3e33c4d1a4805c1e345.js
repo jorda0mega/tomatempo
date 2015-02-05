@@ -28,8 +28,7 @@ var Timer = React.createClass({displayName: "Timer",
 
 var App = React.createClass({displayName: "App",
 	getInitialState: function(){
-		// this will come from the DB
-		return {timer: 25}
+		return {timer: 3}
 	},
 	decrementTimer: function(interval){
 		if(this.state.timer > 0){

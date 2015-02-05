@@ -28,26 +28,24 @@ var Timer = React.createClass({displayName: "Timer",
 
 var App = React.createClass({displayName: "App",
 	getInitialState: function(){
-		// this will come from the DB
 		return {timer: 25}
 	},
-	decrementTimer: function(interval){
+	decrementTimer: function(countdown, interval){
 		if(this.state.timer > 0){
 			this.setState({timer: this.state.timer - interval});
 		}
 		else{
-			clearInterval(this.countdown);
-			console.info("holla son!");
+			clearInterval(countdown);
+			alert("holla son!");
 		}
 	},
 	startTimer: function(){
 		var self = this;
-		self.countdown = setInterval(function(){
-			self.decrementTimer(1);
+		var countdown = setInterval(function(){
+			self.decrementTimer(countdown, 1);
 		}, 1000);
 	},
-	stopTimer: function(){
-		clearInterval(this.countdown);
+	stopTimer: function(countdown){
 		this.setState({timer: 25});
 	},
   	render: function() {

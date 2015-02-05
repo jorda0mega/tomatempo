@@ -1,6 +1,6 @@
 var Start = React.createClass({
 	handleClick: function(){
-		this.props.startTimer(5);
+		this.props.startTimer();
 	},
 	render: function(){
 		return (
@@ -28,12 +28,26 @@ var Timer = React.createClass({
 
 var App = React.createClass({
 	getInitialState: function(){
+		// this will come from the DB
 		return {timer: 25}
 	},
+	decrementTimer: function(interval){
+		if(this.state.timer > 0){
+			this.setState({timer: this.state.timer - interval});
+		}
+		else{
+			clearInterval(this.countdown);
+			console.info("holla son!");
+		}
+	},
 	startTimer: function(){
-		this.setState({timer: 0});
+		var self = this;
+		self.countdown = setInterval(function(){
+			self.decrementTimer(1);
+		}, 1000);
 	},
 	stopTimer: function(){
+		clearInterval(this.countdown);
 		this.setState({timer: 25});
 	},
   	render: function() {

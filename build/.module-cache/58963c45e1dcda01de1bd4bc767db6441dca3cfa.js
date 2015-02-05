@@ -28,7 +28,7 @@ var Timer = React.createClass({displayName: "Timer",
 
 var App = React.createClass({displayName: "App",
 	getInitialState: function(){
-		// this will come from the DB
+		// this should come from the server
 		return {timer: 25}
 	},
 	decrementTimer: function(interval){
