@@ -2,3 +2,5 @@
 build/.module-cache/*.js
 
 src/.DS_Store
+
+node_modules/**
