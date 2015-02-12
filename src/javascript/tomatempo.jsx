@@ -10,7 +10,7 @@ var Start = React.createClass({
 	render: function(){
 		return (
 			<RaisedButton label="Start" onClick={this.handleClick} />
-		);
+			);
 	}
 });
 
@@ -21,7 +21,7 @@ var Stop = React.createClass({
 	render: function(){
 		return (
 			<RaisedButton label="Stop" onClick={this.handleClick} />
-		);
+			);
 	}
 })
 
@@ -42,36 +42,49 @@ var App = React.createClass({
 		}
 		else{
 			clearInterval(this.countdown);
-			console.info("holla son!");
 		}
 	},
 	startTimer: function(){
 		var self = this;
-		self.countdown = setInterval(function(){
-			self.decrementTimer(1);
-		}, 1000);
+		if(!self.countdown){
+			self.countdown = setInterval(function(){
+				self.decrementTimer(1);
+			}, 1000);
+		}
 	},
 	stopTimer: function(){
-		clearInterval(this.countdown);
-		this.setState({timer: 25});
+		if(this.countdown){
+			clearInterval(this.countdown);
+			this.setState({timer: 25});
+			this.countdown = undefined;
+		}
 	},
-  	render: function() {
-  		return (
-				<table>
-					<tr>
-						<td>
-							<Timer timer={this.state.timer} />
-						</td>
-						<td>
-							<Start startTimer={this.startTimer} />
-						</td>
-						<td>
-							<Stop stopTimer={this.stopTimer} />
-						</td>
-					</tr>
-				</table>
-    	);
-  	}
+	render: function() {
+		cx = React.addons.classSet;
+
+		divTable = cx({
+			"display": "table",
+			"width": "100%",
+			"table-layout": "fixed"
+		});
+
+		divRow = cx({
+			"display": "table-cell",
+			"text-align": "center"
+		});
+
+		return (
+			<div>
+				<div>
+					<Timer timer={this.state.timer} />
+				</div>
+				<div className={divTable} >
+					<Start startTimer={this.startTimer} className={divRow} />
+					<Stop stopTimer={this.stopTimer} className={divRow} />
+				</div>
+			</div>
+			);
+	}
 });
 
 React.render(React.createElement(App, null), document.getElementById("tomatempo"));
