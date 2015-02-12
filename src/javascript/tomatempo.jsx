@@ -1,4 +1,5 @@
-var React = require("../node_modules/react/react.js")
+require("less/tomatempo.less");
+var React = require("react");
 var mui = require('material-ui');
 var RaisedButton = mui.RaisedButton;
 
