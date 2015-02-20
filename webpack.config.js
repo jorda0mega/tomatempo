@@ -1,6 +1,7 @@
 var config = {
     entry: {
-      tomatempo: __dirname + "/src/javascript/tomatempo.jsx"
+      tomatempo: __dirname + "/src/javascript/tomatempo.jsx",
+      trial: __dirname + "/src/javascript/trial.jsx"
     },
 
     output: {
@@ -9,7 +10,7 @@ var config = {
     },
 
     resolve: {
-      modulesDirectories: ["src", "node_modules", "nodes_modules/material-ui/src"],
+      modulesDirectories: ["src", "node_modules", "nodes_modules/material-ui/src", "node_modules/gsap/src/minified"],
       extensions: ["", ".jsx", ".js"]
     },
 

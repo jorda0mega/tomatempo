@@ -1,15 +1,34 @@
 require("less/tomatempo.less");
+// require("TweenLite.min.js");
+// require("gsap-react-plugin");
+var tweenState = require('react-tween-state');
 var React = require("react");
 var mui = require('material-ui');
+var styles = require("javascript/tomatempo-styles.js");
+
 var RaisedButton = mui.RaisedButton;
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var Start = React.createClass({
+	mixins: [tweenState.Mixin],
+	getInitialState: function(){
+		return {width: "50px"};
+	},
 	handleClick: function(){
 		this.props.startTimer();
+		this.tweenState("width", {
+			easing: tweenState.easingTypes.easeInOutQuad,
+      duration: 500,
+      endValue: "100px"
+		});
+		// this.setState({width:"50px"});
 	},
 	render: function(){
+		var style = {
+			width: this.getTweeningValue("width")
+		};
 		return (
-			<RaisedButton label="Start" onClick={this.handleClick} />
+			<RaisedButton label="Start" onClick={this.handleClick} style={style} />
 			);
 	}
 });
@@ -60,30 +79,17 @@ var App = React.createClass({
 		}
 	},
 	render: function() {
-		cx = React.addons.classSet;
-
-		divTable = cx({
-			"display": "table",
-			"width": "100%",
-			"table-layout": "fixed"
-		});
-
-		divRow = cx({
-			"display": "table-cell",
-			"text-align": "center"
-		});
-
 		return (
 			<div>
 				<div>
 					<Timer timer={this.state.timer} />
 				</div>
-				<div className={divTable} >
-					<Start startTimer={this.startTimer} className={divRow} />
-					<Stop stopTimer={this.stopTimer} className={divRow} />
+				<div style={styles.buttonContainer}>
+					<Start startTimer={this.startTimer} style={styles.button} />
+					<Stop stopTimer={this.stopTimer} style={styles.button} />
 				</div>
 			</div>
-			);
+		);
 	}
 });
 
