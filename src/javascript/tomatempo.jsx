@@ -1,7 +1,6 @@
 require("less/tomatempo.less");
-// require("TweenLite.min.js");
-// require("gsap-react-plugin");
-var tweenState = require('react-tween-state');
+require("TweenLite.min.js");
+require("gsap-react-plugin");
 var React = require("react");
 var mui = require('material-ui');
 var styles = require("javascript/tomatempo-styles.js");
@@ -10,28 +9,20 @@ var RaisedButton = mui.RaisedButton;
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var Start = React.createClass({
-	mixins: [tweenState.Mixin],
 	getInitialState: function(){
-		return {width: "50px"};
+		return {width: 50};
 	},
 	handleClick: function(){
 		this.props.startTimer();
-		this.tweenState("width", {
-			easing: tweenState.easingTypes.easeInOutQuad,
-      duration: 500,
-      endValue: "100px"
-		});
-		// this.setState({width:"50px"});
-	},
-	render: function(){
-		var style = {
-			width: this.getTweeningValue("width")
-		};
-		return (
-			<RaisedButton label="Start" onClick={this.handleClick} style={style} />
-			);
-	}
-});
+		TweenLite.to(this, 1, {state: {width: 100}});
+      // this.setState({width:"50px"});
+    },
+    render: function(){
+    	return (
+    		<RaisedButton label="Start" onClick={this.handleClick} style={{width: this.state.width }} />
+    	);
+    }
+  });
 
 var Stop = React.createClass({
 	handleClick: function(){
@@ -81,15 +72,15 @@ var App = React.createClass({
 	render: function() {
 		return (
 			<div>
-				<div>
-					<Timer timer={this.state.timer} />
-				</div>
-				<div style={styles.buttonContainer}>
-					<Start startTimer={this.startTimer} style={styles.button} />
-					<Stop stopTimer={this.stopTimer} style={styles.button} />
-				</div>
+			<div>
+			<Timer timer={this.state.timer} />
 			</div>
-		);
+			<div style={styles.buttonContainer}>
+			<Start startTimer={this.startTimer} style={styles.button} />
+			<Stop stopTimer={this.stopTimer} style={styles.button} />
+			</div>
+			</div>
+			);
 	}
 });
 
