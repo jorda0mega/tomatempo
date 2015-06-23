@@ -1,12 +1,23 @@
-require("less/tomatempo.less");
-require("TweenLite.min.js");
+require("styles/tomatempo.styles");
 require("gsap-react-plugin");
+var ReactStyle = require("react-style");
 var React = require("react");
 var mui = require('material-ui');
-var styles = require("javascript/tomatempo-styles.js");
 
-var RaisedButton = mui.RaisedButton;
+var RaisedButton = mui.RaisedButton,
+    Paper = mui.Paper,
+	  kEnhancedButton = mui.EnhancedButton;
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
+
+// var appStyle = ReactStyle({
+// 	marginLeft: "auto",
+// 	marginRight: "auto"
+// });
+
+// var buttonContainerStyle = ReactStyle({
+// 	marginLeft: "30%",
+// 	marginTop: "70%"
+// });
 
 var Start = React.createClass({
 	getInitialState: function(){
@@ -15,11 +26,10 @@ var Start = React.createClass({
 	handleClick: function(){
 		this.props.startTimer();
 		TweenLite.to(this, 1, {state: {width: 100}});
-      // this.setState({width:"50px"});
     },
     render: function(){
     	return (
-    		<RaisedButton label="Start" onClick={this.handleClick} style={{width: this.state.width }} />
+    		<RaisedButton label="Start" onClick={this.handleClick} />
     	);
     }
   });
@@ -31,13 +41,25 @@ var Stop = React.createClass({
 	render: function(){
 		return (
 			<RaisedButton label="Stop" onClick={this.handleClick} />
-			);
+		);
 	}
 })
 
 var Timer = React.createClass({
 	render: function(){
-		return <div>{this.props.timer}</div>
+		return (
+			<Paper 
+				zDepth={1} 
+				circle={true} 
+				rounded={true} 
+				className="mui-floating-action-button" 
+				innerClassName="mui-floating-action-button-inner">
+				<EnhancedButton className="mui-floating-action-button-container">
+					<span className="mui-floating-action-button-label">{this.props.timer}</span>
+				</EnhancedButton>
+			</Paper>
+		);
+		// return <div>{this.props.timer}</div>
 	}
 });
 
@@ -71,17 +93,18 @@ var App = React.createClass({
 	},
 	render: function() {
 		return (
-			<div>
-			<div>
-			<Timer timer={this.state.timer} />
+			<div id="tomatempo" style={appStyle}>
+				<div>
+					<Timer timer={this.state.timer} />
+				</div>
+				<div style={buttonContainerStyle}>
+					<Start startTimer={this.startTimer} />
+					<Stop stopTimer={this.stopTimer} />
+				</div>
 			</div>
-			<div style={styles.buttonContainer}>
-			<Start startTimer={this.startTimer} style={styles.button} />
-			<Stop stopTimer={this.stopTimer} style={styles.button} />
-			</div>
-			</div>
-			);
+		);
 	}
 });
 
-React.render(React.createElement(App, null), document.getElementById("tomatempo"));
+ReactStyle.inject();
+React.render(React.createElement(App, null), document.body);

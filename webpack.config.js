@@ -1,26 +1,53 @@
+var ReactStylePlugin = require('react-style-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+var path = require("path");
+var webpack = require("webpack");
+
 var config = {
-    entry: {
-      tomatempo: __dirname + "/src/javascript/tomatempo.jsx",
-      trial: __dirname + "/src/javascript/trial.jsx"
-    },
+	devtool: "source-map",
+	entry: [
+		"webpack-dev-server/client?http://localhost:3000",
+		"webpack/hot/only-dev-server",
+		"./src/tomatempo"
+	],
 
-    output: {
-      path: __dirname + "/build/js",
-      filename: "[name].bundle.js"
-    },
+	output: {
+		path: __dirname + "/build/",
+		filename: "app.js",
+		publicPath: "/build/"
+	},
 
-    resolve: {
-      modulesDirectories: ["src", "node_modules", "nodes_modules/material-ui/src", "node_modules/gsap/src/minified"],
-      extensions: ["", ".jsx", ".js"]
-    },
+	resolve: {
+		root: [path.resolve(__dirname)],
+		modulesDirectories: [
+			"src",
+			"node_modules"
+		],
+		extensions: ["", ".jsx", ".js"]
+	},
 
-    module: {
-        loaders: [
-            { test: /\.jsx$/, loader: "jsx-loader?harmony" },
-            { test: /\.less$/, loader: "style-loader!css-loader!less-loader" },
-            { test: /\.eot$/, loader: "file-loader" }
-        ]
-    }
+	module: {
+		loaders: [
+			{ test: /\.css$/, loaders: ['style', ExtractTextPlugin.loader('css-loader')]},
+			{ test: /\.less?$/, loader: 'style!css!styles'},
+			{ test: /\.jsx?$/, loaders: ['react-hot','babel'], exclude: [/node_modules/, /\.config.jsx?$/, /build/] },
+			{ test: /\.woff$/,   loader: "url-loader?limit=10000&minetype=application/font-woff" },
+			{ test: /\.woff2$/,   loader: "url-loader?limit=10000&minetype=application/font-woff" },
+			{ test: /\.ttf$/,    loader: "file-loader" },
+			{ test: /\.eot$/,    loader: "file-loader" },
+			{ test: /\.svg$/,    loader: "file-loader" }
+		]
+	},
+
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin(),
+		new webpack.ProvidePlugin({
+			$: 'jquery',
+			jQuery: 'jquery',
+			"windows.jQuery": 'jquery'
+		})
+	]
 };
 
 module.exports = config;
