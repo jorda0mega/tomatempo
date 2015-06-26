@@ -1,23 +1,12 @@
-require("styles/tomatempo.styles");
-require("gsap-react-plugin");
-var ReactStyle = require("react-style");
 var React = require("react");
-var mui = require('material-ui');
+var mui = require('material-ui'),
+		RaisedButton = mui.RaisedButton;
 
-var RaisedButton = mui.RaisedButton,
-    Paper = mui.Paper,
-	  kEnhancedButton = mui.EnhancedButton;
+let Dialog = mui.Dialog;
+let ThemeManager = new mui.Styles.ThemeManager();
+let Colors = mui.Styles.Colors;
+
 var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
-
-// var appStyle = ReactStyle({
-// 	marginLeft: "auto",
-// 	marginRight: "auto"
-// });
-
-// var buttonContainerStyle = ReactStyle({
-// 	marginLeft: "30%",
-// 	marginTop: "70%"
-// });
 
 var Start = React.createClass({
 	getInitialState: function(){
@@ -25,14 +14,13 @@ var Start = React.createClass({
 	},
 	handleClick: function(){
 		this.props.startTimer();
-		TweenLite.to(this, 1, {state: {width: 100}});
-    },
-    render: function(){
-    	return (
-    		<RaisedButton label="Start" onClick={this.handleClick} />
-    	);
-    }
-  });
+	},
+	render: function(){
+		return (
+			<RaisedButton label="Start" onClick={this.handleClick} />
+		);
+	}
+});
 
 var Stop = React.createClass({
 	handleClick: function(){
@@ -43,21 +31,14 @@ var Stop = React.createClass({
 			<RaisedButton label="Stop" onClick={this.handleClick} />
 		);
 	}
-})
+});
 
 var Timer = React.createClass({
 	render: function(){
 		return (
-			<Paper 
-				zDepth={1} 
-				circle={true} 
-				rounded={true} 
-				className="mui-floating-action-button" 
-				innerClassName="mui-floating-action-button-inner">
-				<EnhancedButton className="mui-floating-action-button-container">
-					<span className="mui-floating-action-button-label">{this.props.timer}</span>
-				</EnhancedButton>
-			</Paper>
+			<label className="mui-floating-action-button-container">
+				<span className="mui-floating-action-button-label">{this.props.timer}</span>
+			</label>
 		);
 		// return <div>{this.props.timer}</div>
 	}
@@ -67,6 +48,14 @@ var App = React.createClass({
 	getInitialState: function(){
 		// this will come from the DB
 		return {timer: 25}
+	},
+	childContextTypes: {
+		muiTheme: React.PropTypes.object
+	},
+	getChildContext: function(){
+		return {
+			muiTheme: ThemeManager.getCurrentTheme()
+		};
 	},
 	decrementTimer: function(interval){
 		if(this.state.timer > 0){
@@ -93,11 +82,11 @@ var App = React.createClass({
 	},
 	render: function() {
 		return (
-			<div id="tomatempo" style={appStyle}>
+			<div id="tomatempo">
 				<div>
 					<Timer timer={this.state.timer} />
 				</div>
-				<div style={buttonContainerStyle}>
+				<div>
 					<Start startTimer={this.startTimer} />
 					<Stop stopTimer={this.stopTimer} />
 				</div>
@@ -106,5 +95,4 @@ var App = React.createClass({
 	}
 });
 
-ReactStyle.inject();
 React.render(React.createElement(App, null), document.body);
